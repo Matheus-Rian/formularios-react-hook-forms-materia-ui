@@ -1,39 +1,33 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import { useForm, FormProvider } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
 import { RHFTextInput } from "./components/RHFTextInput";
 
-interface ILoginForm {
+interface IFormInputs {
   email: string;
   password: string;
 }
 
-const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Informe um email válido")
-    .required("O email é obrigatório."),
-  password: yup
-    .string()
-    .min(6, "A senha deve possuir no mínimo 6 caracteres.")
-    .required("A senha é obrigatória."),
+const schema = yup.object({
+  email: yup.string().email('Insira um email válido.').required('O email é obrigatório.'),
+  password: yup.string().min(6, 'A senha deve possuir no mínimo 6 caracteres.').required(),
 });
 
 const Home: NextPage = () => {
-  const methods = useForm<ILoginForm>({
+  const methods = useForm<IFormInputs>({
     resolver: yupResolver(schema),
     defaultValues: {
-      email: "",
-      password: "",
-    },
+      email: '',
+      password: '',
+    }
   });
 
-  const onSubmit = (data: ILoginForm) => {
+  function onSubmit(data: IFormInputs) {
     console.log(data);
     methods.reset();
-  };
+  }
 
   return (
     <Stack
@@ -61,9 +55,7 @@ const Home: NextPage = () => {
               </Typography>
               <RHFTextInput name="email" label="Email" type="text" />
               <RHFTextInput name="password" label="Senha" type="password" />
-              <Button variant="contained" type="submit">
-                Enviar
-              </Button>
+              <Button variant="contained" type="submit">Enviar</Button>
             </Stack>
           </form>
         </FormProvider>
